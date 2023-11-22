@@ -7,6 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.zip.DataFormatException;
 
 @Service
 public class GalleryService {
@@ -17,7 +21,30 @@ public class GalleryService {
         this.galleryRepository = galleryRepository;
     }
 
-    public Gallery uploadImage(String label, MultipartFile file) {
+    public List<Gallery> getAllImages() {
+        Iterable<Gallery> galleries = galleryRepository.findAll();
+        List<Gallery> galleryList = new ArrayList<>();
+        galleries.forEach(galleryList::add);
+
+        return galleryList;
+    }
+
+    public Gallery findGalleryByLabel(String label) {
+        Optional<Gallery> galleryOptional = galleryRepository.findByLabel(label);
+        Gallery gallery = galleryOptional.orElse(null);
+
+        try {
+            assert gallery != null;
+            gallery.setImage(ImageHelper.decompressImage(gallery.getImage()));
+        } catch (DataFormatException | IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return gallery;
+
+    }
+
+    public Gallery uploadGallery(String label, MultipartFile file) {
         Gallery gallery = new Gallery();
 
         try {
@@ -29,6 +56,10 @@ public class GalleryService {
         }
 
         return gallery;
+    }
+
+    public void deleteGallery(String label) {
+        galleryRepository.deleteByLabel(label);
     }
 
 }
