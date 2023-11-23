@@ -24,8 +24,14 @@ public class GalleryService {
     public List<Gallery> getAllImages() {
         Iterable<Gallery> galleries = galleryRepository.findAll();
         List<Gallery> galleryList = new ArrayList<>();
-        galleries.forEach(galleryList::add);
-
+        galleries.forEach(gallery -> {
+            try {
+                gallery.setImage(ImageHelper.decompressImage(gallery.getImage()));
+                galleryList.add(gallery);
+            } catch (DataFormatException | IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
         return galleryList;
     }
 
