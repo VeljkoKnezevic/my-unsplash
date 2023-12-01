@@ -2,6 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply font-noto;
+.button-filter {
+  filter: drop-shadow(0px 4px 10px rgba(61, 180, 109, 0.2));
 }
