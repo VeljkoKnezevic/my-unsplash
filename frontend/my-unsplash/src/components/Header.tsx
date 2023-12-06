@@ -1,13 +1,16 @@
-import { useState } from "react";
-
 type Header = {
   addPhotoForm: boolean;
+  label: string;
   setAddPhotoForm: React.Dispatch<React.SetStateAction<boolean>>;
+  setLabel: React.Dispatch<React.SetStateAction<string>>;
 };
 
-export default function Header({ addPhotoForm, setAddPhotoForm }: Header) {
-  const [label, setLabel] = useState<string>("");
-
+export default function Header({
+  addPhotoForm,
+  setAddPhotoForm,
+  label,
+  setLabel,
+}: Header) {
   return (
     <header className="pt-8 lg:px-24 xl:px-30 sm:px-20 flex">
       <img src="/my_unsplash_logo.svg" alt="Logo" />

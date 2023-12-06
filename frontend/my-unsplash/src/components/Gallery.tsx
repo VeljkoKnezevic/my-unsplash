@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { DataType, ImageType } from "../types";
 
-export default function Gallery() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+type GalleryTypes = {
+  label: string;
+};
+
+export default function Gallery({ label }: GalleryTypes) {
   const [data, setData] = useState<DataType | null>(null);
 
   useEffect(() => {
@@ -27,6 +30,7 @@ export default function Gallery() {
           .sort((a, b) => {
             return b.id - a.id;
           })
+          .filter((word) => word.label.includes(label))
           .map((image: ImageType) => {
             return (
               <img
