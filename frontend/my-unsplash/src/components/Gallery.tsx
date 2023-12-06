@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { DataType, ImageType } from "../types";
 
 export default function Gallery() {
-  const [data, setData] = useState<any>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [data, setData] = useState<DataType | null>(null);
 
   useEffect(() => {
     const getData = async () => {
@@ -11,25 +13,30 @@ export default function Gallery() {
           "Content-Type": "application/json",
         },
       });
-
       const data = await response.json();
       setData(data);
     };
 
     getData();
-  }, []);
-
-  console.log(data);
+  }, [data]);
 
   return (
     <>
-      {data && (
-        <img
-          src={`data:image/jpeg;base64, ${data[0].image}`}
-          width={300}
-          height={500}
-        />
-      )}
+      {data &&
+        data
+          .sort((a, b) => {
+            return b.id - a.id;
+          })
+          .map((image: ImageType) => {
+            return (
+              <img
+                key={image.id}
+                src={`data:image/jpeg;base64, ${image.image}`}
+                width={300}
+                height={500}
+              />
+            );
+          })}
     </>
   );
 }

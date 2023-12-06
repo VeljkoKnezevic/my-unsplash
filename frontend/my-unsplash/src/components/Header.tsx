@@ -1,9 +1,13 @@
+import { useState } from "react";
+
 type Header = {
   addPhotoForm: boolean;
   setAddPhotoForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function Header({ addPhotoForm, setAddPhotoForm }: Header) {
+  const [label, setLabel] = useState<string>("");
+
   return (
     <header className="pt-8 lg:px-24 xl:px-30 sm:px-20 flex">
       <img src="/my_unsplash_logo.svg" alt="Logo" />
@@ -12,6 +16,8 @@ export default function Header({ addPhotoForm, setAddPhotoForm }: Header) {
           className="py-[18px] bg-[url('/search.svg')] bg-no-repeat"
           type="text"
           placeholder="Search by name"
+          value={label}
+          onChange={(e) => setLabel(e.target.value)}
         />
       </form>
       <button
